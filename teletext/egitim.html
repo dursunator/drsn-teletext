@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim - Teletext</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .teletext-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .teletext-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .page-info {
+            color: #fff;
+        }
+
+        .teletext-title {
+            background-color: #f00;
+            color: #fff;
+            padding: 0 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .green-line {
+            height: 2px;
+            background-color: #0f0;
+            margin: 10px 0;
+        }
+
+        .top-navigation {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .top-navigation .nav-btn {
+            cursor: pointer;
+            text-transform: lowercase;
+            transition: opacity 0.2s;
+        }
+
+        .top-navigation .nav-btn:hover {
+            opacity: 0.8;
+        }
+
+        .navigation-row {
+            display: flex;
+            justify-content: space-between;
+            color: #0ff;
+            margin: 5px 0;
+        }
+
+        .navigation-row .page-number {
+            color: #ff0;
+        }
+
+        .content-item {
+            display: flex;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .red-bar {
+            display: inline-block;
+            width: 4px;
+            background-color: #f00;
+            margin-right: 10px;
+        }
+
+        .content-text {
+            flex: 1;
+            color: #0f0;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #ff0;
+        }
+
+        .nav-footer {
+            margin-top: auto;
+            border-top: 2px solid #0f0;
+            padding: 5px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 30px;
+            margin-left: 20px;
+        }
+
+        .nav-btn {
+            color: #0ff;
+            text-transform: lowercase;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+        }
+
+        .key-hint {
+            color: #fff;
+            margin-left: 3px;
+            font-size: 14px;
+        }
+
+        .input-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            gap: 5px;
+            color: #0f0;
+            font-size: 24px;
+        }
+
+        .cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="teletext-container">
+        <header class="teletext-header">
+            <div class="page-info">P400 1/1</div>
+            <div class="teletext-title">EĞİTİM</div>
+            <div class="time-info">
+                <span id="date"></span>
+                <span id="time"></span>
+            </div>
+        </header>
+
+        <div class="green-line"></div>
+
+        <div class="navigation-row">
+            <div>ANA SAYFA <span class="page-number">100</span></div>
+            <div>SONRAKİ SAYFA <span class="page-number">500</span></div>
+        </div>
+
+        <div id="content-container">
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">YKS</span> 2025 Başvuru Tarihleri: 15 Şubat - 15 Mart 2025
+                </div>
+            </div>
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">TYT</span> 1. Oturum: 14 Haziran 2025 Cumartesi 10:15
+                </div>
+            </div>
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">AYT</span> 2. Oturum: 15 Haziran 2025 Pazar 10:15
+                </div>
+            </div>
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">ALES/1</span> İlkbahar Dönemi: 4 Mayıs 2025 Pazar
+                </div>
+            </div>
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">YDS</span> İlkbahar Dönemi: 6 Nisan 2025 Pazar
+                </div>
+            </div>
+            <div class="content-item">
+                <div class="red-bar"></div>
+                <div class="content-text">
+                    <span class="highlight">DGS</span> Başvuru: 15-23 Mayıs 2025 Sınav: 22 Haziran
+                </div>
+            </div>
+        </div>
+
+        <div class="green-line"></div>
+
+        <div class="nav-footer">
+            <div class="nav-buttons" style="display: flex; justify-content: space-between; width: 100%;">
+                <span class="nav-btn" onclick="navigateToPage('100')">ANA SAYFA <span style="color: #ff0;">100</span> [1]</span>
+                <span class="nav-btn" onclick="navigateToPage('180')">HAVA DURUMU <span style="color: #ff0;">180</span> [2]</span>
+                <span class="nav-btn" onclick="navigateToPage('666')">SNAKE <span style="color: #ff0;">666</span> [6]</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <div class="input-box">
+            <span class="digit" id="digit1">_</span>
+            <span class="digit" id="digit2">_</span>
+            <span class="digit" id="digit3">_</span>
+            <span class="cursor">▋</span>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        const digits = [
+            document.getElementById('digit1'),
+            document.getElementById('digit2'),
+            document.getElementById('digit3')
+        ];
+
+        function updateDigitDisplay() {
+            const paddedInput = currentInput.padEnd(3, '_');
+            for (let i = 0; i < 3; i++) {
+                digits[i].textContent = paddedInput[i];
+            }
+        }
+
+        function navigateToPage(pageNum) {
+            const pages = {
+                '100': 'index.html',
+                '101': 'haber.html',
+                '150': 'depremler.html',
+                '180': 'hava.html',
+                '200': 'spor.html',
+                '201': 'kultur.html',
+                '202': 'egitim.html',
+                '300': 'twitter.html',
+                '500': 'ekonomi.html',
+                '666': 'snake.html'
+            };
+            
+            if (pages[pageNum]) {
+                window.location.href = pages[pageNum];
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['1', '2', '3'].includes(e.key)) {
+                const shortcuts = {
+                    '1': '100',
+                    '2': '201',
+                    '3': '202'
+                };
+                navigateToPage(shortcuts[e.key]);
+                return;
+            }
+
+            if (/^[0-9]$/.test(e.key)) {
+                if (currentInput.length < 3) {
+                    currentInput += e.key;
+                    updateDigitDisplay();
+                    
+                    if (currentInput.length === 3) {
+                        setTimeout(() => {
+                            navigateToPage(currentInput);
+                            currentInput = '';
+                            updateDigitDisplay();
+                        }, 500);
+                    }
+                }
+            }
+            else if (e.key === 'Backspace') {
+                currentInput = currentInput.slice(0, -1);
+                updateDigitDisplay();
+            }
+            else if (e.key === 'Enter' && currentInput.length > 0) {
+                navigateToPage(currentInput);
+                currentInput = '';
+                updateDigitDisplay();
+            }
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+            const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+            
+            const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${days[now.getDay()]}`;
+            const timeStr = now.toLocaleTimeString('tr-TR');
+            
+            document.getElementById('date').textContent = dateStr;
+            document.getElementById('time').textContent = timeStr;
+        }
+
+        async function getEducationNews() {
+            const container = document.getElementById('content-container');
+            try {
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const osymUrl = encodeURIComponent('https://www.osym.gov.tr/TR,21890/2024-sinav-takvimi.html');
+                const yokUrl = encodeURIComponent('https://www.yok.gov.tr/duyurular');
+                
+                const [osymResponse, yokResponse] = await Promise.all([
+                    fetch(proxyUrl + osymUrl),
+                    fetch(proxyUrl + yokUrl)
+                ]);
+
+                const [osymHtml, yokHtml] = await Promise.all([
+                    osymResponse.text(),
+                    yokResponse.text()
+                ]);
+
+                const parser = new DOMParser();
+                const osymDoc = parser.parseFromString(osymHtml, 'text/html');
+                const yokDoc = parser.parseFromString(yokHtml, 'text/html');
+
+                container.innerHTML = '';
+
+                const sinavlar = osymDoc.querySelectorAll('table tr');
+                const duyurular = yokDoc.querySelectorAll('.duyuru-item');
+
+                const allNews = [];
+
+                sinavlar.forEach(sinav => {
+                    const cells = sinav.querySelectorAll('td');
+                    if (cells.length >= 2) {
+                        const title = cells[0]?.textContent?.trim();
+                        const date = cells[1]?.textContent?.trim();
+                        if (title && date) {
+                            allNews.push({
+                                type: 'SINAV',
+                                title: title,
+                                date: date
+                            });
+                        }
+                    }
+                });
+
+                duyurular.forEach(duyuru => {
+                    const title = duyuru.querySelector('.duyuru-baslik')?.textContent?.trim();
+                    const date = duyuru.querySelector('.duyuru-tarih')?.textContent?.trim();
+                    if (title) {
+                        allNews.push({
+                            type: 'DUYURU',
+                            title: title,
+                            date: date || ''
+                        });
+                    }
+                });
+
+                allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                allNews.slice(0, 6).forEach(news => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'content-item';
+                    newsItem.innerHTML = `
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">${news.type}</span> ${news.title}
+                            <span style="color: #ff0; float: right">${news.date}</span>
+                        </div>
+                    `;
+                    container.appendChild(newsItem);
+                });
+
+                if (container.children.length === 0) {
+                    throw new Error('No announcements found');
+                }
+            } catch (error) {
+                console.error('Eğitim haberleri yükleme hatası:', error);
+                container.innerHTML = `
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">YKS</span> 2025 Başvuru Tarihleri: 15 Şubat - 15 Mart 2025
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">TYT</span> 1. Oturum: 14 Haziran 2025 Cumartesi 10:15
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">AYT</span> 2. Oturum: 15 Haziran 2025 Pazar 10:15
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">ALES/1</span> İlkbahar Dönemi: 4 Mayıs 2025 Pazar
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">YDS</span> İlkbahar Dönemi: 6 Nisan 2025 Pazar
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <div class="red-bar"></div>
+                        <div class="content-text">
+                            <span class="highlight">DGS</span> Başvuru: 15-23 Mayıs 2025 Sınav: 22 Haziran
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        getEducationNews();
+        setInterval(getEducationNews, 300000);
+    </script>
+</body>
+</html> 

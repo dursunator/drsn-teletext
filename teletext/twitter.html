@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter - Teletext</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .teletext-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .twitter-link {
+            color: #0ff;
+            font-size: 24px;
+            text-decoration: none;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .twitter-link:hover {
+            color: #fff;
+        }
+
+        .info-text {
+            color: #0f0;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .blink-text {
+            color: #0f0;
+            font-size: 18px;
+            animation: blink 1s step-end infinite;
+            margin-top: 20px;
+        }
+
+        .nav-footer {
+            margin-top: auto;
+            border-top: 2px solid #0f0;
+            padding: 5px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 30px;
+            margin-left: 20px;
+        }
+
+        .nav-btn {
+            color: #0ff;
+            text-transform: lowercase;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+        }
+
+        .page-num {
+            color: #ff0;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+
+        .key-hint {
+            color: #fff;
+            margin-left: 3px;
+            font-size: 14px;
+        }
+
+        .input-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            gap: 5px;
+            color: #0f0;
+            font-size: 24px;
+        }
+
+        .cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="teletext-container">
+        <header class="teletext-header">
+            <div class="page-info">P300</div>
+            <div class="teletext-title">TWİTTER</div>
+            <div class="time-info">
+                <span id="date"></span>
+                <span id="time"></span>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <a href="https://x.com/dursunator" target="_blank" class="twitter-link">@dursunator</a>
+            <div class="info-text">TWİTTER PROFİLİNE GİTMEK İÇİN ENTER/SPACE</div>
+        </div>
+
+        <div class="nav-footer">
+            <div class="nav-buttons">
+                <span class="nav-btn" onclick="navigateToPage('100')">ana sayfa<span class="page-num">100</span><span class="key-hint">[1]</span></span>
+                <span class="nav-btn" onclick="navigateToPage('150')">depremler<span class="page-num">150</span><span class="key-hint">[2]</span></span>
+                <span class="nav-btn" onclick="navigateToPage('180')">hava durumu<span class="page-num">180</span><span class="key-hint">[3]</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <div class="input-box">
+            <span class="digit" id="digit1">_</span>
+            <span class="digit" id="digit2">_</span>
+            <span class="digit" id="digit3">_</span>
+            <span class="cursor">▋</span>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        const digits = [
+            document.getElementById('digit1'),
+            document.getElementById('digit2'),
+            document.getElementById('digit3')
+        ];
+
+        function updateDigitDisplay() {
+            const paddedInput = currentInput.padEnd(3, '_');
+            for (let i = 0; i < 3; i++) {
+                digits[i].textContent = paddedInput[i];
+            }
+        }
+
+        function navigateToPage(pageNum) {
+            const pages = {
+                '100': 'index.html',
+                '150': 'depremler.html',
+                '180': 'hava.html',
+                '200': 'spor.html',
+                '300': 'twitter.html',
+                '500': 'ekonomi.html',
+                '666': 'snake.html'
+            };
+            
+            if (pages[pageNum]) {
+                window.location.href = pages[pageNum];
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['1', '2', '3'].includes(e.key)) {
+                const shortcuts = {
+                    '1': '100',
+                    '2': '150',
+                    '3': '180'
+                };
+                navigateToPage(shortcuts[e.key]);
+                return;
+            }
+
+            if (e.code === 'Space' || e.code === 'Enter') {
+                window.open('https://x.com/dursunator', '_blank');
+                return;
+            }
+
+            if (/^[0-9]$/.test(e.key)) {
+                if (currentInput.length < 3) {
+                    currentInput += e.key;
+                    updateDigitDisplay();
+                    
+                    if (currentInput.length === 3) {
+                        setTimeout(() => {
+                            navigateToPage(currentInput);
+                            currentInput = '';
+                            updateDigitDisplay();
+                        }, 500);
+                    }
+                }
+            }
+            else if (e.key === 'Backspace') {
+                currentInput = currentInput.slice(0, -1);
+                updateDigitDisplay();
+            }
+            else if (e.key === 'Enter' && currentInput.length > 0) {
+                navigateToPage(currentInput);
+                currentInput = '';
+                updateDigitDisplay();
+            }
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+            const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+            
+            const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${days[now.getDay()]}`;
+            const timeStr = now.toLocaleTimeString('tr-TR');
+            
+            document.getElementById('date').textContent = dateStr;
+            document.getElementById('time').textContent = timeStr;
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html> 

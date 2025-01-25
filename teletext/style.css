@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'TeletextFont';
+    src: url('https://fonts.cdnfonts.com/css/mode-seven') format('woff2');
+}
+
+/* Temel stiller */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family: 'TeletextFont', monospace;
+    color: #fff;
+    min-height: 100vh;
+}
+
+.teletext-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.teletext-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 4px solid #0f0;
+    padding-bottom: 15px;
+}
+
+.teletext-title {
+    background-color: #f00;
+    padding: 8px 20px;
+    font-size: 36px;
+    letter-spacing: 3px;
+}
+
+.page-info, .time-info {
+    font-size: 28px;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.menu-item {
+    margin: 20px 0;
+    font-size: 32px;
+}
+
+.page-num {
+    color: #0f0;
+    margin-left: 15px;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-around;
+    border-top: 4px solid #0f0;
+    padding-top: 20px;
+}
+
+.nav-btn {
+    padding: 8px 20px;
+    text-transform: lowercase;
+    font-size: 28px;
+}
+
+.nav-btn.haber { color: #f00; }
+.nav-btn.spor { color: #0f0; }
+.nav-btn.hava { color: #ff0; }
+.nav-btn.ekonomi { color: #0ff; }
+
+/* Teletext efekti için */
+.teletext-container {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.6;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+
+/* Yanıp sönen imleç efekti */
+.teletext-container::after {
+    content: "▋";
+    font-size: 32px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+} 
